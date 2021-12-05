@@ -1,12 +1,14 @@
 import { Controller, Get, Post, Put, Delete, Body, Req, Res } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';//importing the Dto created
-
+import { Request, Response } from 'express';
 
 @Controller('items')//handles item controller
 export class ItemsController {
     @Get()//Creating an Get end point with the decorator
-    findAll(): string{
-        return 'Get All items';
+    findAll(@Req() req:Request, @Res() res:Response): Response{
+        //return 'Get All items';
+        console.log(req.url);
+        return res.send('Hello world');
     }
 
     @Post()//Creating an Post end point with the decorator
