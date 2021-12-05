@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Nest-rest-api is a simple CRUD operation app using Nest js and Mysql
 
 ## Installation
 
