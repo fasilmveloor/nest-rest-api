@@ -20,4 +20,14 @@ export class ItemsService {
     createItem(item : Item): Promise<Item> {
         return this.itemRepository.save(item);
     }
+
+    async update(id : string, data : Partial<Item>) {
+        await this.itemRepository.update(id, data);
+        return this.itemRepository.findOne(id);
+    }
+
+    async deleteItem(id : string)  {
+        await this.itemRepository.delete(id);
+        return {deleted: true};
+    }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Res, HttpStatus, Patch } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from './entities/item.entity';
 
@@ -30,6 +30,22 @@ export class ItemsController {
         const item = await this.itemService.findOne(id);
         return response.status(HttpStatus.OK).json({
             item
+        })
+    }
+
+    @Patch(':id')
+    async updateUser(@Res() response, @Param('id') id, @Body() data: Partial<Item>) {
+        const item = await this.itemService.update(id, data);
+        return response.status(HttpStatus.FOUND).json({
+            item
+        })
+    }
+
+    @Delete(':id')
+    async deleteUser(@Res() response, @Param('id') id) {
+        const res = await this.itemService.deleteItem(id);
+        return response.status(HttpStatus.FOUND).json({
+            res
         })
     }
 }
