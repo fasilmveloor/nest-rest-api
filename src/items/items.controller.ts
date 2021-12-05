@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { CreateItemDto } from './dto/create-item.dto';//importing the Dto created
+import { Controller, Get, Post, Put, Delete, Body, Param, Res, HttpStatus } from '@nestjs/common';
 import { ItemsService } from './items.service';
-import { Items } from './interfaces/items.interface';
 import { Item } from './entities/item.entity';
 
 @Controller('items')//handles item controller
@@ -11,39 +9,27 @@ export class ItemsController {
 
     }
 
-
-    @Get()//Creating an Get end point with the decorator
-    findAll(): Promise<Item[]> {
-        return this.itemService.findAll();
+    @Post()
+    async createItem(@Res() response, @Body()item : Item) {
+        const newItem = await this.itemService.createItem(item);
+        return response.status(HttpStatus.CREATED).json({
+            newItem
+        })
     }
 
-    /* 
-    Handling Url parameters
-    @Get(':id')//Creating with url parameters
-    //@Param is used to Access url parameters
-    findone(@Param() param) : string {
-        return `item : ${param.id}`;
-    }
-    */
-    @Get(':id') 
-    findone(@Param('id') id) : Items {
-        return this.itemService.findOne(id);
-    }
-    
-    //Delete end point
-    @Delete(':id')
-    delete(@Param('id') id) : string {
-        return `Delete : ${id}`;
+    @Get()
+    async fetchAll(@Res() response) {
+        const items = await this.itemService.findAll();
+        return response.status(HttpStatus.OK).json({
+            items
+        })
     }
 
-    //Update end point
-    @Put(':id')
-    update(@Body() updateItemDto:CreateItemDto, @Param('id') id) : string {
-        return `Update : ${id} - Name: ${updateItemDto.name}`;
-    }
-
-    @Post()//Creating an Post end point with the decorator
-    create(@Body() createItemDto:CreateItemDto): string {
-        return `Name: ${createItemDto.name} Desc: ${createItemDto.description} quantity : ${createItemDto.qty}`;
+    @Get('/:id')
+    async findById(@Res() response, @Param('id') id) {
+        const item = await this.itemService.findOne(id);
+        return response.status(HttpStatus.OK).json({
+            item
+        })
     }
 }

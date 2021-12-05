@@ -24,7 +24,7 @@ import { ItemsModule } from './items/items.module'
       dropSchema : true,
     })
   ],
-  controllers: [AppController, ItemsController],
-  providers: [AppService, ItemsService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
